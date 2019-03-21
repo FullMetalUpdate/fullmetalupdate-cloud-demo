@@ -1,0 +1,5 @@
+ostree/
+.vscode/
+env/
+mariadb/
+docker/

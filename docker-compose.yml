@@ -1,0 +1,93 @@
+version: '2.1'
+
+services:
+
+  # ---------------------
+  # The rabbitMQ service
+  # ---------------------
+  rabbitmq:
+    image: "rabbitmq:3.7.8-management"
+    hostname: "rabbitmq"
+    environment:
+      RABBITMQ_DEFAULT_VHOST: "/"
+    expose:
+      - "15672"
+      - "5672"
+    labels:
+      NAME: "rabbitmq"
+    networks:
+      - fmu_network
+
+  # ---------------------
+  # The mariadb service
+  # ---------------------
+  mariadb:
+    image: 'bitnami/mariadb:10.1.37'
+    hostname: "mariadb"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+    environment:
+      - MARIADB_USER=hawkbit
+      - MARIADB_PASSWORD=hawkbit
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=hawkbit
+    volumes:
+     - './mariadb/:/var/lib/mysql/'
+    expose:
+      - "3306"
+    labels:
+      NAME: "mariadb"
+    networks:
+      - fmu_network
+
+  # ---------------------
+  # The hawkbit service
+  # ---------------------
+  hawkbit:
+    image: 'fullmetalupdate/hawkbit:version1.0'
+    hostname: "hawkbit"
+    links:
+        - mariadb
+        - rabbitmq
+    environment:
+      - 'SPRING_RABBITMQ_HOST=rabbitmq'
+      - 'SPRING_RABBITMQ_USERNAME=guest'
+      - 'SPRING_RABBITMQ_PASSWORD=guest'
+      - 'SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/hawkbit'
+      - 'SPRING_DATASOURCE_USERNAME=hawkbit'
+      - 'SPRING_DATASOURCE_PASSWORD=hawkbit'
+      - 'SPRING_JPA_DATABASE=MYSQL'
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    labels:
+      NAME: "hawkbit"
+    networks:
+      - fmu_network
+
+  # ---------------------
+  # The OSTree service
+  # ---------------------
+  ostree:
+    image: 'fullmetalupdate/ostree-server:version1.0'
+    hostname: "OsTree"
+    volumes:
+      - ./ostree:/ostree
+    expose:
+      - "22"
+      - "8000"
+    ports:
+      - "8022:22"
+      - "8000:8000"
+    labels:
+      NAME: "OsTree"
+    networks:
+      - fmu_network
+
+networks:
+  fmu_network:
+
