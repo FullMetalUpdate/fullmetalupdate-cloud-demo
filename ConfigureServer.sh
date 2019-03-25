@@ -7,8 +7,8 @@ curl -X POST \
  -H 'cache-control: no-cache' \
  -d '[ { 
  "securityToken" : "380ff2b5908e776cb69159f3f4477e4f", 
- "controllerId" : "i.MX6_Demo", 
- "name" : "i.MX6_Demo" 
+ "controllerId" : "FullMetalUpdate_Demo", 
+ "name" : "FullMetalUpdate_Demo" 
 } ]' 
 
 # Set-up the polling time to 30 seconds
