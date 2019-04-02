@@ -44,7 +44,7 @@ services:
   # The hawkbit service
   # ---------------------
   hawkbit:
-    image: 'fullmetalupdate/hawkbit:version1.0'
+    image: 'fullmetalupdate/hawkbit:v1.0'
     hostname: "hawkbit"
     links:
         - mariadb
@@ -73,7 +73,7 @@ services:
   # The OSTree service
   # ---------------------
   ostree:
-    image: 'fullmetalupdate/ostree-server:version1.0'
+    image: 'fullmetalupdate/ostree-server:v1.0'
     hostname: "OsTree"
     volumes:
       - ./ostree:/ostree
