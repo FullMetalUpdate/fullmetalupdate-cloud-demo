@@ -17,7 +17,7 @@ fi
 # Check if pip is installed
 if command -V $PIP_FOR_FMU_SERVER &>/dev/null; then
 	#we make sure that pip is up to date
-	$PYTHON_FOR_FMU_SERVER -m pip install --upgrade pip
+	$PYTHON_FOR_FMU_SERVER -m pip install --upgrade --user pip
     # Try to install virtualenv if not already installed
     $PIP_FOR_FMU_SERVER install --user virtualenv
 	# Check if we are running onLinux or Windows to adapt the path of the source command
