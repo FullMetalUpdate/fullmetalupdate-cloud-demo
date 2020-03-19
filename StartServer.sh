@@ -9,7 +9,7 @@ else
        export PIP_FOR_FMU_SERVER=pip
        export PYTHON_FOR_FMU_SERVER=python
     else
-       echo 'Please install python or python3 to run this script'
+       echo "Please install python or python3 to run this script"
        exit
     fi
 fi
@@ -42,7 +42,7 @@ if command -V $PIP_FOR_FMU_SERVER &>/dev/null; then
     # Start the server
     docker-compose up
 else
-    echo 'Please install $PIP_FOR_FMU_SERVER to run this script'
+    echo "Please install $PIP_FOR_FMU_SERVER to run this script"
     exit
 fi
 
